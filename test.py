@@ -16,7 +16,7 @@ class FittingRoom:
         print("\n ID: "+ str(self.customer_id) + " Color: [Green]")
         self.green_customers_done += 1 # customer counter for green 
         self.customer_id += 1 # increment id
-        #time.sleep(3) 
+        time.sleep(3) 
         self.room.release() # release semaphore to allow customer
         if self.room._value == self.switch: # if current val of semaphore counter is equal to fitting room
             print("\nEmpty fitting room!")
@@ -26,7 +26,7 @@ class FittingRoom:
         print("\n ID: "+ str(self.customer_id) + " Color: Blue")
         self.blue_customers_done += 1
         self.customer_id += 1
-        time.sleep(3) 
+        time.sleep(4) 
         self.room.release()
         if self.room._value == self.switch:
             print("\nEmpty fitting room!")
@@ -40,7 +40,7 @@ class FittingRoom:
             while temp:
                 self.room.acquire() # for semaphore
                 threading.Thread(target=self.green_room).start()# create new thread to allow many customers
-               # time.sleep(1) 
+                time.sleep(1) 
                 if self.green_customers_done != green_customers: # if more green customers wait
                     if counter == self.switch - 1: # if enough g customers entered
                         if self.blue_customers_done != blue_customers:# if there are blue waiting
@@ -72,14 +72,14 @@ class FittingRoom:
             while temp:
                 self.room.acquire()# acquire sema
                 threading.Thread(target=self.blue_room).start()#new thread
-                #time.sleep(1)
+                time.sleep(1)
                 if self.blue_customers_done != blue_customers:# more blue customer waiting
                     if counter == self.switch - 1:# if blue customer have entered
                         if self.green_customers_done != green_customers:# if green waiting
                             while self.room._value != capacity:# until room is ready
                                 pass
                             self.mutex.release()# rlease lock
-                          #  time.sleep(1)
+                            time.sleep(1)
                             temp = False #stop the loop
                             counter = 0#reset
                     else:
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     #starting them
     green.start()
-    time.sleep(1)# used to delay deadlock
+    time.sleep(1)# used to avoid deadlock
     blue.start()
 
     # join threads (to finish before they exit)
